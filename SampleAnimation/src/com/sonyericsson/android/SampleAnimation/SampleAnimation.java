@@ -20,8 +20,8 @@ public class SampleAnimation extends Activity
     {
     	
     	// Load the bitmaps for multi layer scroll;
-    	//int [] ids = { R.drawable.shape1, R.drawable.shape2, R.drawable.shape3,R.drawable.shape4};
-    	int [] ids = { R.drawable.test1, R.drawable.test2};
+    	int [] ids = { R.drawable.shape1, R.drawable.shape2, R.drawable.shape3,R.drawable.shape4};
+    	//int [] ids = { R.drawable.test1, R.drawable.test2};
         
     	int [] speed = {2,3,4,5};
         

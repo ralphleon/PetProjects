@@ -26,6 +26,10 @@ class MultiLayerScroll extends SurfaceView implements SurfaceHolder.Callback
 	int [] mXOffset;
 	private boolean[] mFlipper;
 	private Sprinkle mSprinkle;
+
+	private int mHeight;
+
+	private int mWidth;
 	
 	class MultiLayerThread extends Thread
 	{	
@@ -66,11 +70,14 @@ class MultiLayerScroll extends SurfaceView implements SurfaceHolder.Callback
 		{
 			Rect clip = canvas.getClipBounds();
 			int clipWidth = clip.width();
+			int clipHeight = clip.height();
 			
 			canvas.drawPaint(mBgPaint);
 			
 			Bitmap [] bitmaps = mBitmaps;
 			int n = bitmaps.length;
+			
+			Rect dst = new Rect();
 			
 			for(int i=0;i<n;i++)
 			{	
@@ -89,22 +96,26 @@ class MultiLayerScroll extends SurfaceView implements SurfaceHolder.Callback
 					int offset = mXOffset[i];
 					
 					if(mFlipper[i]) {
+						dst.set(0,0,clipWidth,clipHeight);
 						// draw the first portion	
-						canvas.translate(mXOffset[i],0);
+						canvas.translate(offset,0);
 						canvas.scale(-1,1);
-						canvas.drawBitmap(bitmaps[i],0,0, null);					
+						canvas.drawBitmap(bitmaps[i],null,dst, null);					
 						
 						canvas.scale(-1,1);
-						canvas.drawBitmap(bitmaps[i],0,0, null);
+						canvas.drawBitmap(bitmaps[i],null,dst, null);
 						
 					}else{
+						dst.set(0,0,clipWidth,clipHeight);
 						
 						// draw the first portion
+						canvas.translate(clipWidth+offset, 0);
 						canvas.scale(-1,1);
-						canvas.drawBitmap(bitmaps[i],-offset-clipWidth,0, null);					
+						canvas.drawBitmap(bitmaps[i],null,dst, null);					
 						
+						canvas.translate(2*clipWidth, 0);
 						canvas.scale(-1, 1);
-						canvas.drawBitmap(bitmaps[i],offset - clipWidth,0, null);			
+						canvas.drawBitmap(bitmaps[i],null,dst, null);			
 					}
 					
 					canvas.restore();	
@@ -150,7 +161,9 @@ class MultiLayerScroll extends SurfaceView implements SurfaceHolder.Callback
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) 
 	{
-    	mSprinkle.setSize(width,height);
+    	mWidth = width;
+    	mHeight = height;
+		mSprinkle.setSize(width,height);
 	}
 
 	public void surfaceCreated(SurfaceHolder holder)
